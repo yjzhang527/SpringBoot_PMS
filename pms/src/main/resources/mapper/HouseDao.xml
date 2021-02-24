@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzz.pms.dao.HouseDao">
+
+    <resultMap id="BaseResultMap" type="com.zzz.pms.entity.House">
+        <!--@Table house-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="houseid" column="houseID" jdbcType="VARCHAR"/>
+        <result property="buildid" column="buildid" jdbcType="INTEGER"/>
+        <result property="acreage" column="acreage" jdbcType="INTEGER"/>
+        <result property="direction" column="direction" jdbcType="VARCHAR"/>
+        <result property="floorsnum" column="floorsnum" jdbcType="INTEGER"/>
+        <result property="unitnum" column="unitnum" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="property" column="property" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, houseID, buildid, acreage, direction, floorsnum, unitnum, type, property
+        from psm.house
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, houseID, buildid, acreage, direction, floorsnum, unitnum, type, property
+        from psm.house
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, houseID, buildid, acreage, direction, floorsnum, unitnum, type, property
+        from psm.house
+        <where>
+            <if test="houseid != null and houseid != ''">
+                and houseid like concat("%",#{houseid},"%")
+            </if>
+            <if test="buildid != null">
+                and buildid like concat("%",#{buildid},"%")
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into psm.house(houseID, buildid, acreage, direction, floorsnum, unitnum, type, property)
+        values (#{houseid}, #{buildid}, #{acreage}, #{direction}, #{floorsnum}, #{unitnum}, #{type}, #{property})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update psm.house
+        <set>
+            <if test="houseid != null and houseid != ''">
+                houseID = #{houseid},
+            </if>
+            <if test="buildid != null">
+                buildid = #{buildid},
+            </if>
+            <if test="acreage != null">
+                acreage = #{acreage},
+            </if>
+            <if test="direction != null and direction != ''">
+                direction = #{direction},
+            </if>
+            <if test="floorsnum != null">
+                floorsnum = #{floorsnum},
+            </if>
+            <if test="unitnum != null">
+                unitnum = #{unitnum},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+            <if test="property != null">
+                property = #{property},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from psm.house where id = #{id}
+    </delete>
+
+</mapper>

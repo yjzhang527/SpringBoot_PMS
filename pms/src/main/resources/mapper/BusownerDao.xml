@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzz.pms.dao.BusownerDao">
+
+    <resultMap id="BaseResultMap" type="Busowner">
+        <!--@Table busowner-->
+        <id property="id" column="id"/>
+        <result property="busownnum" column="busownnum"/>
+        <result property="busownname" column="busownname"/>
+        <result property="busownsex" column="busownsex"/>
+        <result property="busowntel" column="busowntel"/>
+        <result property="busownemail" column="busownemail"/>
+        <result property="rigtime" column="rigtime"/>
+        <result property="idcardtype" column="idcardtype"/>
+        <result property="idcard" column="idcard"/>
+        <result property="saleteim" column="saleteim"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" parameterType="string" resultMap="BaseResultMap">
+        select
+          busownnum, id, busownname, busownsex, busowntel, busownemail, rigtime, idcardtype, idcard, saleteim
+        from psm.busowner
+        where busownnum = #{busownnum}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+        busownnum, id, busownname, busownsex, busowntel, busownemail, rigtime, idcardtype, idcard, saleteim
+        from psm.busowner
+        <where>
+            <if test="busownname != null">
+                and busownname like concat("%",#{busownname},"%")
+            </if>
+            <if test="busowntel != null">
+                and busowntel like concat("%",#{busowntel},"%")
+            </if>
+            <if test="idcard != null">
+                and idcard like concat("%",#{idcard},"%")
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" parameterType="Busowner">
+        insert into psm.busowner
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="busownnum != null">
+                busownnum,
+            </if>
+            <if test="busownname != null">
+                busownname,
+            </if>
+            <if test="busownsex != null">
+                busownsex,
+            </if>
+            <if test="busowntel != null">
+                busowntel,
+            </if>
+            <if test="rigtime != null">
+                rigtime,
+            </if>
+            <if test="idcardtype != null">
+                idcardtype,
+            </if>
+            <if test="idcard != null">
+                idcard,
+            </if>
+            <if test="saleteim != null">
+                saleteim,
+            </if>
+            <if test="busownemail != null">
+                busownemail,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="busownnum != null">
+                #{busownnum},
+            </if>
+            <if test="busownname != null">
+                #{busownname},
+            </if>
+            <if test="busownsex != null">
+                #{busownsex},
+            </if>
+            <if test="busowntel != null">
+                #{busowntel},
+            </if>
+            <if test="rigtime != null">
+                #{rigtime},
+            </if>
+            <if test="idcardtype != null">
+                #{idcardtype},
+            </if>
+            <if test="idcard != null">
+                #{idcard},
+            </if>
+            <if test="saleteim != null">
+                #{saleteim},
+            </if>
+            <if test="busownemail != null">
+                #{busownemail},
+            </if>
+        </trim>
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update psm.busowner
+        <set>
+            <if test="busownnum != null and busownnum != ''">
+                busownnum = #{busownnum},
+            </if>
+            <if test="busownname != null and busownname != ''">
+                busownname = #{busownname},
+            </if>
+            <if test="busownsex != null">
+                busownsex = #{busownsex},
+            </if>
+            <if test="busowntel != null and busowntel != ''">
+                busowntel = #{busowntel},
+            </if>
+            <if test="busownemail != null and busownemail != ''">
+                busownemail = #{busownemail},
+            </if>
+            <if test="rigtime != null">
+                rigtime = #{rigtime},
+            </if>
+            <if test="idcardtype != null and idcardtype != ''">
+                idcardtype = #{idcardtype},
+            </if>
+            <if test="idcard != null and idcard != ''">
+                idcard = #{idcard},
+            </if>
+            <if test="saleteim != null">
+                saleteim = #{saleteim},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from psm.busowner where id = #{id}
+    </delete>
+
+</mapper>

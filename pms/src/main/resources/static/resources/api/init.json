@@ -1,0 +1,63 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "/sys/toWelcome"
+  },
+  "logoInfo": {
+    "title": "PMS",
+    "image": "/resources/images/logo.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "首页",
+          "href": "/sys/toWelcome",
+          "icon": "fa fa-home",
+          "target": "_self"
+        },
+        {
+          "title": "业主管理",
+          "href": "/sys/toPropertyManage",
+          "icon": "fa fa-male",
+          "target": "_self"
+        },
+        {
+          "title": "楼栋管理",
+          "href": "/sys/toBuildManage",
+          "icon": "fa fa-building",
+          "target": "_self"
+        },
+        {
+          "title": "投诉管理",
+          "href": "/sys/toComplaintManage",
+          "icon": "fa fa-file-text-o",
+          "target": "_self"
+        },
+        {
+          "title": "房屋管理",
+          "href": "/sys/toHouseManage",
+          "icon": "fa fa-building-o",
+          "target": "_self"
+        },
+        {
+          "title": "车位管理",
+          "href": "/sys/toParkingManage",
+          "icon": "fa fa-car",
+          "target": "_self"
+        },
+        {
+          "title": "报修管理",
+          "href": "/sys/toRepairManage",
+          "icon": "fa fa-wrench",
+          "target": "_self"
+        }
+      ]
+    }
+  ]
+}

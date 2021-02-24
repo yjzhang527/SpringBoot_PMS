@@ -1,0 +1,130 @@
+<div class="layuimini-main" id="dataFrmContent">
+
+    <div class="layui-form layuimini-form" id="dataFrm" lay-filter="dataFrm">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">房产编号</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="id">
+                <input type="text" name="busownnum" lay-verify="required" lay-reqtext="房产编号不能为空" placeholder="请输入房产编号" value="12" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="busownname" lay-verify="required" lay-reqtext="姓名不能为空" placeholder="请输入姓名" value="12" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="busownsex" value="0" title="男" checked="">
+                <input type="radio" name="busownsex" value="1" title="女">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">手机</label>
+            <div class="layui-input-block">
+                <input type="tel" name="busowntel" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="12" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-block">
+                <input type="email" name="busownemail" placeholder="请输入邮箱" value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">注册时间</label>
+            <div class="layui-input-block">
+                <input type="text" name="rigtime" placeholder="请输入注册时间" value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">证件类别</label>
+            <div class="layui-input-block">
+                <input type="text" name="idcardtype" placeholder="请输入证件类别" value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">证件号</label>
+            <div class="layui-input-block">
+                <input type="text" name="idcard" placeholder="请输入证件号" value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">购买日期</label>
+            <div class="layui-input-block">
+                <input type="text" name="saleteim" placeholder="请输入购买日期" value="" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn layui-btn-normal" lay-submit = "" lay-filter="saveBtn">确认保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['form','jquery','table','miniPage'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            table = layui.table,
+            miniPage = layui.miniPage,
+            $ = layui.jquery;
+
+        /**
+         * 初始化表单，要加上，不然刷新部分组件可能会不加载
+         */
+        form.render();
+
+        // 当前弹出层，防止ID被覆盖
+        var parentIndex = layer.index;
+        /*form.on('submit(saveBtn)',function (data) {
+           $.post('/busowner/addBusOwner',data.field,function (res) {
+               if (res.code == 200){
+                   layer.close(index);
+                   layer.close(parentIndex);
+               }
+               layer.msg(res)
+           })
+            return false;
+        });*/
+
+        //监听提交
+        /*form.on('submit(saveBtn)', function (data) {
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息',
+            }, function () {
+
+                // 关闭弹出层
+                layer.close(index);
+                layer.close(parentIndex);
+
+            });
+            return false;
+        });*/
+        /*form.on('submit(saveBtn)', function (data) {
+            var data = JSON.stringify(data.field);
+            layer.confirm('确认添加信息？',{icon: 3, title: '提示信息'},function (index) {
+                $.post({
+                    url:'/busowner/addBusOwner',
+                    data: data,
+                    contentType: 'application/json; charset=UTF-8',
+                    dataType: 'json',
+                    success:function (result) {
+                        layer.msg(result.msg, {time: 1000});
+                        layer.close(index);
+                        layer.close(parentIndex);
+                        miniPage.refresh(result);
+                    },
+                    error:function (result) {
+                        miniPage.refresh(result);
+                        layer.msg(result.msg, {time: 1000});
+                        layer.close(index);
+                    }
+                });
+            });
+        });*/
+    });
+</script>

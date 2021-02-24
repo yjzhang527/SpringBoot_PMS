@@ -1,0 +1,91 @@
+<style>
+    .layui-form-item .layui-input-company {width: auto;padding-right: 10px;line-height: 38px;}
+</style>
+<div class="layuimini-container layuimini-page-anim">
+    <div class="layuimini-main">
+
+        <div class="layui-form layuimini-form" th:each="a:${admin}" id="userSetting">
+            <div class="layui-form-item">
+                <!--/*@thymesVar id="admin" type="java.lang.String"*/-->
+                <label class="layui-form-label required">登录名</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="id" th:value="${a.id}">
+                    <input type="text" name="loginname" lay-verify="required" lay-reqtext="管理账号不能为空" placeholder="请输入管理账号"  th:value="${a.loginname}" class="layui-input" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">姓名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" placeholder="请输入姓名"  value="" class="layui-input" th:value="${a.name}" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">性别</label>
+                <div class="layui-input-block">
+                    <input type="text" name="sex" placeholder="请输入性别"  value="" class="layui-input" th:value="${a.sex}" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">职位</label>
+                <div class="layui-input-block">
+                    <input type="text" name="remark" placeholder="请输入职位"  value="" class="layui-input" th:value="${a.remark}" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">地址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="address" placeholder="请输入地址"  value="" class="layui-input" th:value="${a.address}" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">入职日期</label>
+                <div class="layui-input-block">
+                    <input type="text" name="hiredate" placeholder="请输入入职日期"  value="" class="layui-input" th:value="${a.hiredate}" >
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['jquery','form','miniPage'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            layer = layui.layer,
+            miniPage = layui.miniPage;
+
+        /**
+         * 初始化表单，要加上，不然刷新部分组件可能会不加载
+         */
+        var tableIns = form.render();
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var data = JSON.stringify(data.field);
+            var url = '/admin/updateAdmin';
+            layer.confirm('确认更新信息？', {icon: 3, title: '提示信息'}, function (index) {
+                $.post({
+                    url:url,
+                    data: data,
+                    contentType: 'application/json; charset=UTF-8',
+                    dataType: 'json',
+                    success:function (result) {
+                        miniPage.refresh(result);
+                        layer.msg(result.msg, {time: 1000});
+                        layer.close(index);
+                    },
+                    error:function (result) {
+                        miniPage.refresh(result);
+                        layer.msg(result.msg, {time: 1000});
+                        layer.close(index);
+                    }
+                });
+            });
+        });
+    });
+</script>

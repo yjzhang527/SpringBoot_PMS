@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzz.pms.dao.ComplaintDao">
+
+    <resultMap id="BaseResultMap" type="com.zzz.pms.entity.Complaint">
+        <!--@Table complaint-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="complainnum" column="complainnum" jdbcType="VARCHAR"/>
+        <result property="busownnum" column="busownnum" jdbcType="VARCHAR"/>
+        <result property="conten" column="conten" jdbcType="VARCHAR"/>
+        <result property="feedback" column="feedback" jdbcType="VARCHAR"/>
+        <result property="complaintime" column="complaintime" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, complainnum, busownnum, conten, feedback, complaintime
+        from psm.complaint
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, complainnum, busownnum, conten, feedback, complaintime
+        from psm.complaint
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, complainnum, busownnum, conten, feedback, complaintime
+        from psm.complaint
+        <where>
+            <if test="complainnum != null and complainnum != ''">
+                and complainnum like concat("%",#{complainnum},"%")
+            </if>
+            <if test="busownnum != null and busownnum != ''">
+                and busownnum like concat("%",#{busownnum},"%")
+            </if>
+            <if test="complaintime != null">
+                and complaintime like concat("%",#{complaintime},"%")
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into psm.complaint(complainnum, busownnum, conten, feedback, complaintime)
+        values (#{complainnum}, #{busownnum}, #{conten}, #{feedback}, #{complaintime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update psm.complaint
+        <set>
+            <if test="complainnum != null and complainnum != ''">
+                complainnum = #{complainnum},
+            </if>
+            <if test="busownnum != null and busownnum != ''">
+                busownnum = #{busownnum},
+            </if>
+            <if test="conten != null and conten != ''">
+                conten = #{conten},
+            </if>
+            <if test="feedback != null and feedback != ''">
+                feedback = #{feedback},
+            </if>
+            <if test="complaintime != null">
+                complaintime = #{complaintime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from psm.complaint where id = #{id}
+    </delete>
+
+</mapper>

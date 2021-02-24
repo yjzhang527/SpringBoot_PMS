@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzz.pms.dao.AdminDao">
+
+    <resultMap id="BaseResultMap" type="Admin">
+        <!--@Table admin-->
+        <result property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="loginname" column="loginname" />
+        <result property="address" column="address" />
+        <result property="sex" column="sex" />
+        <result property="remark" column="remark" />
+        <result property="pwd" column="pwd" />
+        <result property="hiredate" column="hiredate" />
+        <result property="imgpath" column="imgpath" />
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, name, loginname, address, sex, remark, pwd, hiredate, imgpath
+        from psm.admin
+        where id = #{id}
+    </select>
+    
+    <select id="login" resultMap="BaseResultMap">
+        select
+          id, name, loginname, address, sex, remark, pwd, hiredate, imgpath
+        from admin
+        where loginname = #{loginname} and pwd = #{pwd}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, name, loginname, address, sex, remark, pwd, hiredate, imgpath
+        from psm.admin
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, name, loginname, address, sex, remark, pwd, hiredate, imgpath
+        from psm.admin
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="loginname != null and loginname != ''">
+                and loginname = #{loginname}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="sex != null">
+                and sex = #{sex}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark}
+            </if>
+            <if test="pwd != null and pwd != ''">
+                and pwd = #{pwd}
+            </if>
+            <if test="hiredate != null">
+                and hiredate = #{hiredate}
+            </if>
+            <if test="imgpath != null and imgpath != ''">
+                and imgpath = #{imgpath}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into psm.admin(name, loginname, address, sex, remark, pwd, hiredate, imgpath)
+        values (#{name}, #{loginname}, #{address}, #{sex}, #{remark}, #{pwd}, #{hiredate}, #{imgpath})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update psm.admin
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="sex != null and address != ''">
+                sex = #{sex},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="pwd != null and pwd != ''">
+                pwd = #{pwd},
+            </if>
+            <if test="hiredate != null and address != ''">
+                hiredate = #{hiredate},
+            </if>
+            <if test="imgpath != null and imgpath != ''">
+                imgpath = #{imgpath},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from psm.admin where id = #{id}
+    </delete>
+
+</mapper>

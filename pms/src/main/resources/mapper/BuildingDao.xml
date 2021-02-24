@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzz.pms.dao.BuildingDao">
+
+    <resultMap id="BaseResultMap" type="com.zzz.pms.entity.Building">
+        <!--@Table building-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="buildId" column="buildId" jdbcType="VARCHAR"/>
+        <result property="buildname" column="buildname" jdbcType="VARCHAR"/>
+        <result property="buildheight" column="buildheight" jdbcType="INTEGER"/>
+        <result property="floors" column="floors" jdbcType="INTEGER"/>
+        <result property="housenum" column="housenum" jdbcType="INTEGER"/>
+        <result property="residentnum" column="residentnum" jdbcType="INTEGER"/>
+        <result property="buildtime" column="buildtime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, buildId, buildname, buildheight, floors, housenum, residentnum, buildtime
+        from psm.building
+        where id = #{id}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, buildId, buildname, buildheight, floors, housenum, residentnum, buildtime
+        from psm.building
+        <where>
+            <if test="buildId != null and buildId != ''">
+                and buildId like concat("%",#{buildId},"%")
+            </if>
+            <if test="buildname != null and buildname != ''">
+                and buildname like concat("%",#{buildname},"%")
+            </if>
+            <if test="buildheight != null">
+                and buildheight like concat("%",#{buildheight},"%")
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into psm.building(buildId, buildname, buildheight, floors, housenum, residentnum, buildtime)
+        values (#{buildid}, #{buildname}, #{buildheight}, #{floors}, #{housenum}, #{residentnum}, #{buildtime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update psm.building
+        <set>
+            <if test="buildid != null and buildid != ''">
+                buildId = #{buildid},
+            </if>
+            <if test="buildname != null and buildname != ''">
+                buildname = #{buildname},
+            </if>
+            <if test="buildheight != null">
+                buildheight = #{buildheight},
+            </if>
+            <if test="floors != null">
+                floors = #{floors},
+            </if>
+            <if test="housenum != null">
+                housenum = #{housenum},
+            </if>
+            <if test="residentnum != null">
+                residentnum = #{residentnum},
+            </if>
+            <if test="buildtime != null">
+                buildtime = #{buildtime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from psm.building where id = #{id}
+    </delete>
+
+</mapper>

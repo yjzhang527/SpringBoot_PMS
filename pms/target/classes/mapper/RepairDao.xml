@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzz.pms.dao.RepairDao">
+
+    <resultMap id="BaseResultMap" type="com.zzz.pms.entity.Repair">
+        <!--@Table repair-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="repairid" column="repairid" jdbcType="VARCHAR"/>
+        <result property="busownnum" column="busownnum" jdbcType="VARCHAR"/>
+        <result property="repaircontent" column="repaircontent" jdbcType="VARCHAR"/>
+        <result property="createtime" column="createtime" jdbcType="OTHER"/>
+        <result property="repairadmin" column="repairadmin" jdbcType="VARCHAR"/>
+        <result property="repairtime" column="repairtime" jdbcType="OTHER"/>
+        <result property="repairfee" column="repairfee" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, repairid, busownnum, repaircontent, createtime, repairadmin, repairtime, repairfee
+        from psm.repair
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, repairid, busownnum, repaircontent, createtime, repairadmin, repairtime, repairfee
+        from psm.repair
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, repairid, busownnum, repaircontent, createtime, repairadmin, repairtime, repairfee
+        from psm.repair
+        <where>
+            <if test="repairid != null and repairid != ''">
+                and repairid like concat("%",#{repairid},"%")
+            </if>
+            <if test="busownnum != null and busownnum != ''">
+                and busownnum like concat("%",#{busownnum},"%")
+            </if>
+            <if test="createtime != null">
+                and createtime like concat("%",#{createtime},"%")
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into psm.repair(repairid, busownnum, repaircontent, createtime, repairadmin, repairtime, repairfee)
+        values (#{repairid}, #{busownnum}, #{repaircontent}, #{createtime}, #{repairadmin}, #{repairtime}, #{repairfee})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update psm.repair
+        <set>
+            <if test="repairid != null and repairid != ''">
+                repairid = #{repairid},
+            </if>
+            <if test="busownnum != null and busownnum != ''">
+                busownnum = #{busownnum},
+            </if>
+            <if test="repaircontent != null and repaircontent != ''">
+                repaircontent = #{repaircontent},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime},
+            </if>
+            <if test="repairadmin != null and repairadmin != ''">
+                repairadmin = #{repairadmin},
+            </if>
+            <if test="repairtime != null">
+                repairtime = #{repairtime},
+            </if>
+            <if test="repairfee != null and repairfee != ''">
+                repairfee = #{repairfee},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from psm.repair where id = #{id}
+    </delete>
+
+</mapper>

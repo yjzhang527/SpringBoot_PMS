@@ -1,0 +1,70 @@
+#thymeleaf的配置
+spring:
+  thymeleaf:
+    cache: false
+    servlet:
+      content-type: text/html
+    mode: LEGACYHTML5
+    encoding: utf-8
+  #配置数据源
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://47.112.109.246:3306/pms
+#    url: jdbc:mysql://127.0.0.1:3306/psm
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource #指定数据源的类型   druid
+    druid:
+      initialSize: 3
+      minIdle: 3
+      maxActive: 30
+      maxWait: 15000
+      timeBetweenEvictionRunsMillis: 120000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: false
+      maxPoolPreparedStatementPerConnectionSize: 20
+      removeAbandoned: true
+      removeAbandonedTimeoutMillis: 20000
+      logAbandoned: true
+      logDifferentThread: true
+      #filters: log4j,stat
+      useGlobalDataSourceStat: true
+  #druid的监控配置
+  druid:
+    web:
+      allow:
+      deny:
+      druid-registration-url: '/druid/*'
+      login-password: 123456
+      login-username: root
+      exclusions: '*.js,*.gif,*.jpg,*.jpeg,*.png,*.css,*.ico,*.jsp,/druid/*'
+      filters-url-patterns: /*
+  mvc:
+    format:
+      date: yyyy-MM-dd
+
+#mybatis的配置
+mybatis:
+  mapper-locations:   #配置mybatis的映射文件地址  注意一般放到resources里面
+    - classpath:mapper/*Dao.xml
+#    - classpath:mapper/bus/*Mapper.xml
+#  config-location: classpath:mybatis.cfg.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-aliases-package: com.zzz.pms.entity
+
+#文件上传的服务器的址
+upload:
+  uploadPath: 'D:/upload/'
+#配置项目热部署
+devtools:
+  restart:
+  enabled: true
+
+#log4j配置
+log
+

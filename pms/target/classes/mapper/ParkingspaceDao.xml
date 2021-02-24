@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzz.pms.dao.ParkingspaceDao">
+
+    <resultMap id="BaseResultMap" type="com.zzz.pms.entity.Parkingspace">
+        <!--@Table parkingspace-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="parkingnum" column="parkingnum" jdbcType="VARCHAR"/>
+        <result property="busownnum" column="busownnum" jdbcType="VARCHAR"/>
+        <result property="carnumber" column="carnumber" jdbcType="VARCHAR"/>
+        <result property="carcolor" column="carcolor" jdbcType="VARCHAR"/>
+        <result property="parkingcard" column="parkingcard" jdbcType="VARCHAR"/>
+        <result property="createtime" column="createtime" jdbcType="OTHER"/>
+        <result property="createadmin" column="createadmin" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, parkingnum, busownnum, carnumber, carcolor, parkingcard, createtime, createadmin
+        from psm.parkingspace
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, parkingnum, busownnum, carnumber, carcolor, parkingcard, createtime, createadmin
+        from psm.parkingspace
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, parkingnum, busownnum, carnumber, carcolor, parkingcard, createtime, createadmin
+        from psm.parkingspace
+        <where>
+            <if test="parkingnum != null and parkingnum != ''">
+                and parkingnum like concat("%",#{parkingnum},"%")
+            </if>
+            <if test="busownnum != null and busownnum != ''">
+                and busownnum like concat("%",#{busownnum},"%")
+            </if>
+            <if test="carnumber != null and carnumber != ''">
+                and carnumber like concat("%",#{carnumber},"%")
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into psm.parkingspace(parkingnum, busownnum, carnumber, carcolor, parkingcard, createtime, createadmin)
+        values (#{parkingnum}, #{busownnum}, #{carnumber}, #{carcolor}, #{parkingcard}, #{createtime}, #{createadmin})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update psm.parkingspace
+        <set>
+            <if test="parkingnum != null and parkingnum != ''">
+                parkingnum = #{parkingnum},
+            </if>
+            <if test="busownnum != null and busownnum != ''">
+                busownnum = #{busownnum},
+            </if>
+            <if test="carnumber != null and carnumber != ''">
+                carnumber = #{carnumber},
+            </if>
+            <if test="carcolor != null and carcolor != ''">
+                carcolor = #{carcolor},
+            </if>
+            <if test="parkingcard != null and parkingcard != ''">
+                parkingcard = #{parkingcard},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime},
+            </if>
+            <if test="createadmin != null and createadmin != ''">
+                createadmin = #{createadmin},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from psm.parkingspace where id = #{id}
+    </delete>
+
+</mapper>

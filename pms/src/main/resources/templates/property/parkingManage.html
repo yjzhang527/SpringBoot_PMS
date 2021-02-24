@@ -1,0 +1,258 @@
+<style> .layui-form-label {
+    width: 130px !important;
+    text-align: center !important;
+}
+</style>
+<div class="layuimini-container layuimini-page-anim">
+    <div class="layuimini-main">
+
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="" id="searchFrm">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">车位编号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="parkingnum" autocomplete="off" class="layui-input" placeholder="请输入车位编号">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">车主编号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="busownnum" autocomplete="off" class="layui-input" placeholder="请输入车主编号">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">车牌号码</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="carnumber" autocomplete="off" class="layui-input" placeholder="请输入车牌号码">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button id="doSearch" type="button" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+        </script>
+    </div>
+</div>
+
+<!-- 添加和修改开始 -->
+<div class="layuimini-main" id="dataFrmContent" style="display: none;padding: 10px">
+
+    <div class="layui-form layuimini-form" id="dataFrm" lay-filter="dataFrm">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">车位编号</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="id">
+                <input type="text" name="parkingnum" lay-verify="required" lay-reqtext="此项不能为空" placeholder="请输入车位编号" value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">车主编号</label>
+            <div class="layui-input-block">
+                <input type="text" name="busownnum" lay-verify="required" lay-reqtext="此项不能为空" placeholder="请输入车主编号" value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">车牌号码</label>
+            <div class="layui-input-block">
+                <input type="text" name="carnumber" lay-verify="required" lay-reqtext="此项不能为空" placeholder="请输入车牌号码" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">车辆颜色</label>
+            <div class="layui-input-block">
+                <input type="text" name="carcolor" lay-verify="required" value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">车辆出入卡编号</label>
+            <div class="layui-input-block">
+                <input type="text" name="parkingcard" placeholder="请输入车辆出入卡编号" value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">办理日期</label>
+            <div class="layui-input-block">
+                <input type="text" name="createtime" placeholder="请输入办理日期" value="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">经办人</label>
+            <div class="layui-input-block">
+                <input type="text" name="createadmin" placeholder="请输入经办人" value="" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn layui-btn-normal" lay-submit = "" lay-filter="saveBtn">确认保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 添加和修改结束 -->
+
+<script>
+    layui.use(['form','jquery', 'table','miniPage','element'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table,
+            miniPage = layui.miniPage;
+
+        var tableIns = table.render({
+            elem: '#currentTableId',
+            url: '/parkingspace/queryAll',
+            toolbar: '#toolbarDemo',
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 15,
+            page: true,
+            skin: 'line',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cols: [
+                [
+                    {type: "checkbox", width: 50},
+                    {field: 'id', width: 50, title: 'ID'},
+                    {field: 'parkingnum', width: 100, title: '车位编号'},
+                    {field: 'busownnum', width: 100, title: '车主编号'},
+                    {field: 'carnumber', width: 110, title: '车牌号码'},
+                    {field: 'carcolor', width: 110, title: '车辆颜色'},
+                    {field: 'parkingcard', width: 130, title: '车辆出入卡编号'},
+                    {field: 'createtime', width: 130, title: '办理日期'},
+                    {field: 'createadmin', width: 130, title: '经办人'},
+                    {title: '操作', minWidth: 100, toolbar: '#currentTableBar', align: "center"}
+                ]
+            ]
+        });
+
+        //查询
+        $("#doSearch").click(function(){
+            var params=$("#searchFrm").serialize();
+            console.log(params);
+            tableIns.reload({url: '/parkingspace/queryAll?'+params});
+        });
+
+        /**
+         * toolbar事件监听
+         */
+        var url = "";
+        var mainIndex;
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'add') {   // 监听添加操作
+                var openWH = miniPage.getOpenWidthHeight();
+
+                mainIndex = layer.open({
+                    title: '添加用户',
+                    type: 1,
+                    shade: 0,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: [openWH[0] + 'px', openWH[1] + 'px'],
+                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    content: $("#dataFrmContent"),
+                    skin:'layui-layer-molv',
+                    success:function (layero, index) {
+                        url="/parkingspace/addParking"
+                    }
+                });
+                $(window).on("resize", function () {
+                    layer.full(mainIndex);
+                });
+            } else if (obj.event === 'delete') {  // 监听删除操作
+                var checkStatus = table.checkStatus('currentTableId')
+                    , data = checkStatus.data;
+                // console.log(data);
+                for (var i = 0;i <= checkStatus.data.length;i ++){
+                    layer.confirm('确定删除【' + data[i].busownname + '】？', {icon: 3, title: '提示信息'}, function (index) {
+                        $.post('/parkingspace/deleteById', {id: data[i].id}, function (obj) {
+                            if (obj.code == 200) {
+                                layer.msg(obj.msg);
+                                layer.close(mainIndex);
+                                //刷新表格
+                                tableIns.reload();
+                            } else {
+                                layer.msg(obj.msg);
+                            }
+                        })
+                    })
+                }
+            }
+        });
+
+        //监听提交
+        form.on('submit(saveBtn)', function(data){
+            var params = data.field;
+            // console.log(JSON.stringify(params));
+            $.post(url,params,function(obj){
+                if(obj.code==200){
+                    layer.msg(obj.msg);
+                    layer.close(mainIndex);
+                    //刷新表格
+                    tableIns.reload();
+                }else{
+                    layer.msg(obj.msg);
+                }
+            });
+            return false;
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(currentTableFilter)', function (obj) {
+            console.log(obj)
+        });
+
+        table.on('tool(currentTableFilter)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'edit') {
+                var openWH = miniPage.getOpenWidthHeight();
+
+                mainIndex = layer.open({
+                    title: '编辑用户',
+                    type: 1,
+                    shade: 0,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: [openWH[0] + 'px', openWH[1] + 'px'],
+                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    content: $("#dataFrmContent"),
+                    success : function(layero, index){
+                        form.val('dataFrm',data);
+                        url="/parkingspace/update"
+                    }
+                });
+                $(window).on("resize", function () {
+                    layer.full(mainIndex);
+                });
+            } else if (obj.event === 'delete') {
+                mainIndex = layer.confirm('真的删除行么', function () {
+                    $.post('/parkingspace/deleteById', {
+                        id: data.id
+                    }),
+                        obj.del();
+                    layer.close(mainIndex);
+                });
+            }
+        });
+    });
+</script>
